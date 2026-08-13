@@ -799,7 +799,7 @@ function importProjectJSON(file) {
 
 const COMPILE_CSS = `
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #111; margin: 0; }
-  .cover { padding: 40px 36px 24px; border-bottom: 3px solid #111; }
+  .cover { padding: 40px 36px 24px; border-bottom: 3px solid #111; page-break-after: always; }
   .cover h1 { margin: 0 0 6px; font-size: 1.8rem; }
   .cover p { color: #555; margin: 0 0 16px; }
   .report-page { padding: 28px 36px; page-break-after: always; }
