@@ -419,7 +419,7 @@ function filterDepartment(dept, query) {
 
 // ---------- single-day report ----------
 
-function buildDayReportHTML(shootInfo, selections) {
+function buildDayReportHTML(shootInfo, selections, fallbackTitle) {
   const info = shootInfo;
   const entries = Object.values(selections);
   const dayLabel = info.dayNumber
@@ -427,7 +427,7 @@ function buildDayReportHTML(shootInfo, selections) {
     : "";
 
   let html = "";
-  html += `<h2>${info.productionTitle || "Untitled Production"}</h2>`;
+  html += `<h2>${info.productionTitle || fallbackTitle || "Untitled Production"}</h2>`;
   html += `<div class="report-header-grid">
     <div><b>Shooting Date</b>${formatDate(info.shootDate)}</div>
     <div><b>Filming Day</b>${dayLabel || "—"}</div>
@@ -471,7 +471,8 @@ function buildDayReportHTML(shootInfo, selections) {
 }
 
 function updateReport() {
-  document.getElementById("reportContent").innerHTML = buildDayReportHTML(state.shootInfo, state.selections);
+  const fallbackTitle = getActiveProject()?.name;
+  document.getElementById("reportContent").innerHTML = buildDayReportHTML(state.shootInfo, state.selections, fallbackTitle);
 }
 
 function sumQty(entries) {
@@ -1067,7 +1068,7 @@ function compileProjectPDF() {
     ${buildAggregateSummaryHTML(days)}
   </div>`;
   days.forEach((day) => {
-    html += `<div class="report-page">${buildDayReportHTML(day.shootInfo, day.selections)}</div>`;
+    html += `<div class="report-page">${buildDayReportHTML(day.shootInfo, day.selections, project.name)}</div>`;
   });
   html += `</body></html>`;
 
@@ -1089,6 +1090,28 @@ function bindTabs() {
       document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
       if (btn.dataset.tab === "report") updateReport();
     });
+  });
+}
+
+// ---------- settings modal ----------
+
+function openSettingsModal() {
+  document.getElementById("settingsModal").classList.add("open");
+}
+
+function closeSettingsModal() {
+  document.getElementById("settingsModal").classList.remove("open");
+}
+
+function bindSettingsModal() {
+  const backdrop = document.getElementById("settingsModal");
+  document.getElementById("settingsBtn").addEventListener("click", openSettingsModal);
+  document.getElementById("settingsCloseBtn").addEventListener("click", closeSettingsModal);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeSettingsModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && backdrop.classList.contains("open")) closeSettingsModal();
   });
 }
 
@@ -1151,6 +1174,7 @@ function init() {
   defaultShootInfoIfEmpty();
   bindShootInfoFields();
   bindTabs();
+  bindSettingsModal();
   bindProjectActions();
   bindDayActions();
   bindReportActions();

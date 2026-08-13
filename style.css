@@ -50,9 +50,21 @@ h1, h2, h3 { margin: 0 0 4px 0; }
   z-index: 20;
 }
 .brand .subtitle { color: var(--text-dim); font-size: 0.85rem; }
-.header-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; }
 
-/* Project & Day bars */
+/* Day strip — the only always-visible controls: project, date, day # */
+.day-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: flex-end;
+  padding: 12px 20px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+.day-strip .field { flex: 1 1 180px; }
+.day-strip .field-day { flex: 0 1 110px; }
+
+/* Bars inside disclosures / modal */
 .bar-row {
   display: flex;
   flex-wrap: wrap;
@@ -62,6 +74,62 @@ h1, h2, h3 { margin: 0 0 4px 0; }
 .bar-row .spacer { flex: 1; }
 .project-summary { margin-top: 10px; color: var(--text-dim); font-size: 0.82rem; }
 .cloud-note { margin-top: 10px; color: var(--text-dim); font-size: 0.76rem; font-style: italic; }
+
+/* Collapsible disclosures (Shoot Details, Filming Days) */
+details.disclosure { padding: 0; }
+details.disclosure summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 4px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details.disclosure summary::-webkit-details-marker { display: none; }
+details.disclosure summary::before {
+  content: "▸";
+  color: var(--text-dim);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+details.disclosure[open] summary::before { transform: rotate(90deg); }
+details.disclosure .details-hint { color: var(--text-dim); font-weight: 400; font-size: 0.8rem; }
+details.disclosure .shoot-info-grid,
+details.disclosure .bar-row { margin-top: 14px; }
+
+/* Settings modal */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 720px;
+  width: 100%;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-body { overflow-y: auto; padding-bottom: 8px; }
+.modal-body .card { margin: 16px 20px; }
 
 /* Shoot Info */
 .shoot-info-grid {
@@ -315,6 +383,29 @@ table.report-table td.qty-col, table.report-table th.qty-col { width: 60px; text
   z-index: 100;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  :root { font-size: 14px; }
+  .app-header { padding: 10px 12px; }
+  .app-header h1 { font-size: 1.15rem; }
+  .day-strip { padding: 10px 12px; gap: 8px 10px; }
+  .day-strip .field, .day-strip .field-day { flex: 1 1 45%; }
+  .tabs { padding: 0 8px; top: 64px; }
+  .tab-btn { padding: 10px 10px; font-size: 0.85rem; }
+  .tab-panel { padding: 10px 10px 60px; }
+  .dept-toolbar { top: 106px; }
+  .card, details.disclosure { margin: 10px 12px; padding: 12px 14px; }
+  .bar-row, .shoot-info-grid { gap: 8px 10px; }
+  .bar-row .field { flex: 1 1 100%; }
+  .item-row { flex-wrap: wrap; }
+  .item-row label { flex: 1 1 100%; }
+  .item-note { flex: 1 1 100%; width: auto; margin-top: 4px; }
+  .category-header { flex-wrap: wrap; }
+  .category-actions { margin-left: auto; }
+  .modal-backdrop { padding: 0; }
+  .modal { max-width: none; max-height: 100vh; height: 100vh; border-radius: 0; border: none; }
+}
 
 /* Print */
 @media print {
