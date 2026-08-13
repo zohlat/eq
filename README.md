@@ -22,9 +22,12 @@ daily equipment requirement report.
 
 ## Running locally
 
-No build step or dependencies required — it's plain HTML/CSS/JS with ES
-modules. You do need to serve the files over HTTP (not `file://`) for
-module imports to work:
+No build step, no dependencies, no server required. Just double-click
+`index.html` (or open it via File → Open in your browser) and the app runs
+entirely from local files.
+
+If you'd rather serve it over HTTP (e.g. for testing on another device on
+your network), an optional zero-dependency static server is included:
 
 ```bash
 npm start
@@ -35,11 +38,11 @@ Then open http://localhost:8080.
 
 ## Customizing the equipment catalog
 
-Edit `data/lighting.js` and `data/grip.js`. Each file exports an array of
+Edit `data/lighting.js` and `data/grip.js`. Each file defines an array of
 category objects:
 
 ```js
-export const lightingData = [
+const lightingData = [
   { category: "HMI Fixtures (PAR & Fresnel)", items: ["1200W HMI Fresnel", "..."] },
   ...
 ];

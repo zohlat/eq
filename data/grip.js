@@ -2,7 +2,7 @@
 // Each category has a name and a list of standard item names.
 // Edit this file to add/remove items available for selection in the app.
 
-export const gripData = [
+const gripData = [
   {
     category: "Stands",
     items: [

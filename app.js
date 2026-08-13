@@ -1,6 +1,3 @@
-import { lightingData } from "./data/lighting.js";
-import { gripData } from "./data/grip.js";
-
 const BASE_CATALOG = { lighting: lightingData, grip: gripData };
 const DEPARTMENTS = ["lighting", "grip"];
 
