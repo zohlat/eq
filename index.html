@@ -33,6 +33,33 @@
     <span>of Total Days</span>
     <input type="number" id="totalDays" min="1" step="1" placeholder="e.g. 20" />
   </label>
+  <label class="field">
+    <span>Location</span>
+    <input type="text" id="location" placeholder="Set / address" />
+  </label>
+  <label class="field field-day">
+    <span>Call Time</span>
+    <input type="time" id="callTime" />
+  </label>
+  <label class="field field-notes">
+    <span>Notes</span>
+    <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
+  </label>
+</section>
+
+<section class="day-strip filming-days no-print">
+  <label class="field">
+    <span>Filming Days in this Project</span>
+    <select id="savedListsSelect">
+      <option value="">— Select a day —</option>
+    </select>
+  </label>
+  <div class="icon-btn-row">
+    <button id="loadBtn" class="btn btn-icon" title="Load selected day">📂</button>
+    <button id="duplicateBtn" class="btn btn-icon" title="Duplicate Last Day">🔁</button>
+    <button id="newBtn" class="btn btn-icon" title="New Day">➕</button>
+    <button id="deleteBtn" class="btn btn-icon btn-danger-ghost" title="Delete selected day">🗑</button>
+  </div>
 </section>
 
 <nav class="tabs">
@@ -47,7 +74,7 @@
 
   <section id="tab-report" class="tab-panel">
     <details class="disclosure card no-print">
-      <summary>Shoot Details <span class="details-hint">production title, crew, location, notes</span></summary>
+      <summary>Shoot Details <span class="details-hint">production title &amp; crew</span></summary>
       <div class="shoot-info-grid">
         <label class="field">
           <span>Production Title</span>
@@ -69,34 +96,6 @@
           <span>Key Grip</span>
           <input type="text" id="keyGrip" placeholder="Key Grip name" />
         </label>
-        <label class="field">
-          <span>Location</span>
-          <input type="text" id="location" placeholder="Set / address" />
-        </label>
-        <label class="field">
-          <span>Call Time</span>
-          <input type="time" id="callTime" />
-        </label>
-        <label class="field field-wide">
-          <span>Notes</span>
-          <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
-        </label>
-      </div>
-    </details>
-
-    <details class="disclosure card no-print">
-      <summary>Filming Days <span class="details-hint">save, load, duplicate, delete</span></summary>
-      <div class="bar-row">
-        <label class="field">
-          <span>Days in this Project</span>
-          <select id="savedListsSelect">
-            <option value="">— Select a day —</option>
-          </select>
-        </label>
-        <button id="loadBtn" class="btn btn-ghost" title="Load selected day">Load Day</button>
-        <button id="duplicateBtn" class="btn btn-ghost" title="Copy equipment from the most recent saved day">Duplicate Last Day</button>
-        <button id="newBtn" class="btn btn-ghost" title="Start a brand new blank day">New Day</button>
-        <button id="deleteBtn" class="btn btn-danger-ghost" title="Delete selected day">Delete Day</button>
       </div>
     </details>
 

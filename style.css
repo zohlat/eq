@@ -63,6 +63,12 @@ h1, h2, h3 { margin: 0 0 4px 0; }
 }
 .day-strip .field { flex: 1 1 180px; }
 .day-strip .field-day { flex: 0 1 110px; }
+.day-strip .field-notes { flex: 2 1 240px; }
+.day-strip.filming-days { border-top: 1px solid var(--border); }
+.day-strip.filming-days .field { flex: 1 1 240px; }
+
+.icon-btn-row { display: flex; gap: 8px; }
+.btn-icon { min-width: 42px; text-align: center; padding: 8px 10px; font-size: 1.1rem; }
 
 /* Bars inside disclosures / modal */
 .bar-row {
@@ -391,6 +397,9 @@ table.report-table td.qty-col, table.report-table th.qty-col { width: 60px; text
   .app-header h1 { font-size: 1.15rem; }
   .day-strip { padding: 10px 12px; gap: 8px 10px; }
   .day-strip .field, .day-strip .field-day { flex: 1 1 45%; }
+  .day-strip .field-notes { flex: 1 1 100%; }
+  .day-strip.filming-days .field { flex: 1 1 100%; }
+  .icon-btn-row { width: 100%; justify-content: flex-end; }
   .tabs { padding: 0 8px; top: 64px; }
   .tab-btn { padding: 10px 10px; font-size: 0.85rem; }
   .tab-panel { padding: 10px 10px 60px; }
