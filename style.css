@@ -61,6 +61,7 @@ h1, h2, h3 { margin: 0 0 4px 0; }
 }
 .bar-row .spacer { flex: 1; }
 .project-summary { margin-top: 10px; color: var(--text-dim); font-size: 0.82rem; }
+.cloud-note { margin-top: 10px; color: var(--text-dim); font-size: 0.76rem; font-style: italic; }
 
 /* Shoot Info */
 .shoot-info-grid {

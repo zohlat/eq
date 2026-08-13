@@ -30,6 +30,45 @@ daily equipment requirement report.
   one printable document (cover page + one section per day + an aggregate
   equipment summary showing cumulative quantity and how many days each item
   is used across the project), ready to print or save as PDF.
+- **Cloud Backup (GitHub)**: back up any project — or all of them — straight
+  to a GitHub repo as JSON files, directly from the browser. See below.
+
+## Cloud Backup (GitHub)
+
+Since this app has no server or database, everything normally lives only in
+the current browser's `localStorage`. The **Cloud Backup (GitHub)** panel
+lets you push your projects to a GitHub repo instead, so they're safe in the
+cloud and usable from another computer.
+
+Setup:
+
+1. Create a GitHub **fine-grained personal access token**
+   (github.com → Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens) scoped to just the one repo you want to back up to,
+   with **Contents: Read and write** permission. (Avoid using a broad
+   classic token with full `repo` scope — least privilege is safer since the
+   token is stored in your browser.)
+2. In the Cloud Backup panel, paste the token, enter the repo as
+   `owner/name` (e.g. `zohlat/eq`), the branch (e.g. `main`), and a folder
+   prefix for backups (default `backups/`). Click **Save Connection**.
+3. Click **Backup Active Project** or **Backup All Projects** any time, or
+   check **Auto-backup active project after every Save List** to have it
+   happen automatically.
+4. To pull a project back down (on this browser or a new one), click
+   **Refresh Backups List**, pick a file, and click **Restore as New
+   Project**.
+
+Each project is written as its own file:
+`<pathPrefix><projectId>-<slugified-name>.json`, containing that project's
+name and every saved day. Backups are committed via GitHub's REST API
+using the Contents endpoint, so each backup shows up as a normal commit in
+the repo's history.
+
+**Security note:** the token is stored in this browser's `localStorage`
+only — it is never written into any file in the repo or committed anywhere.
+Anyone with access to this browser profile can read it back out, so don't
+use this on a shared/public computer, and revoke the token on GitHub if you
+ever need to cut off access.
 
 ## Running locally
 

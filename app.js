@@ -7,6 +7,7 @@ const LS_PROJECTS = "eq_projects_v2";
 const LS_ACTIVE_PROJECT = "eq_activeProjectId";
 const LS_DRAFT = "eq_currentDraft_v2";
 const LS_SAVED_LEGACY = "eq_savedLists"; // pre-project version, migrated on first load
+const LS_GITHUB = "eq_githubSync";
 
 const SHOOT_FIELDS = [
   "shootDate", "dayNumber", "totalDays", "productionTitle",
@@ -591,6 +592,12 @@ function saveCurrentDay() {
   nameInput.value = "";
   updateProjectSummary();
   toast(`Saved as "${name}" in "${project.name}"`);
+
+  if (githubConfig.autoBackup) {
+    backupProjectToGithub(project.id, { silent: true }).then((success) => {
+      if (success) toast(`Saved locally and backed up "${project.name}" to GitHub.`);
+    });
+  }
 }
 
 function renderDaySelect() {
@@ -764,35 +771,225 @@ function exportProjectJSON() {
   toast(`Exported "${project.name}" (${Object.keys(project.days).length} days).`);
 }
 
+function applyImportedProjectJSON(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+    if (!Array.isArray(data.days)) throw new Error("bad shape");
+    let name = data.name || "Imported Project";
+    const existingNames = new Set(Object.values(projects).map((p) => p.name));
+    if (existingNames.has(name)) name = `${name} (imported)`;
+    const project = createProjectRecord(name);
+    data.days.forEach((day) => {
+      const id = genId();
+      project.days[id] = {
+        id,
+        name: day.name || `${day.shootInfo?.shootDate || "undated"} — Day ${day.shootInfo?.dayNumber || "?"}`,
+        savedAt: day.savedAt || Date.now(),
+        shootInfo: day.shootInfo || {},
+        selections: day.selections || {},
+      };
+    });
+    projects[project.id] = project;
+    persistProjects();
+    switchToProject(project.id);
+    toast(`Imported project "${name}" with ${data.days.length} day(s).`);
+    return true;
+  } catch {
+    toast("That file doesn't look like a valid project export.");
+    return false;
+  }
+}
+
 function importProjectJSON(file) {
   const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const data = JSON.parse(reader.result);
-      if (!Array.isArray(data.days)) throw new Error("bad shape");
-      let name = data.name || "Imported Project";
-      const existingNames = new Set(Object.values(projects).map((p) => p.name));
-      if (existingNames.has(name)) name = `${name} (imported)`;
-      const project = createProjectRecord(name);
-      data.days.forEach((day) => {
-        const id = genId();
-        project.days[id] = {
-          id,
-          name: day.name || `${day.shootInfo?.shootDate || "undated"} — Day ${day.shootInfo?.dayNumber || "?"}`,
-          savedAt: day.savedAt || Date.now(),
-          shootInfo: day.shootInfo || {},
-          selections: day.selections || {},
-        };
-      });
-      projects[project.id] = project;
-      persistProjects();
-      switchToProject(project.id);
-      toast(`Imported project "${name}" with ${data.days.length} day(s).`);
-    } catch {
-      toast("That file doesn't look like a valid project export.");
-    }
-  };
+  reader.onload = () => applyImportedProjectJSON(reader.result);
   reader.readAsText(file);
+}
+
+// ---------- GitHub cloud backup ----------
+
+const GITHUB_API = "https://api.github.com";
+
+function loadGithubConfig() {
+  return loadJSON(LS_GITHUB, { token: "", repo: "", branch: "main", pathPrefix: "backups/", autoBackup: false });
+}
+
+let githubConfig = loadGithubConfig();
+
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
+  return btoa(binary);
+}
+
+function base64ToUtf8(b64) {
+  const binary = atob(b64.replace(/\n/g, ""));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function normalizePathPrefix(p) {
+  p = p.replace(/^\/+/, "");
+  if (p && !p.endsWith("/")) p += "/";
+  return p;
+}
+
+function setGithubStatus(msg) {
+  const el = document.getElementById("ghStatus");
+  if (el) el.textContent = msg;
+}
+
+async function githubRequest(path, options = {}) {
+  if (!githubConfig.token || !githubConfig.repo) {
+    throw new Error("Fill in the token and repo, then Save Connection first.");
+  }
+  return fetch(`${GITHUB_API}/repos/${githubConfig.repo}${path}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${githubConfig.token}`,
+      Accept: "application/vnd.github+json",
+      ...(options.headers || {}),
+    },
+  });
+}
+
+async function getFileSha(path) {
+  const res = await githubRequest(`/contents/${encodeURI(path)}?ref=${encodeURIComponent(githubConfig.branch)}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`GitHub error ${res.status} while checking for an existing file.`);
+  const data = await res.json();
+  return data.sha;
+}
+
+async function putGithubFile(path, contentStr, message) {
+  const sha = await getFileSha(path);
+  const res = await githubRequest(`/contents/${encodeURI(path)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message,
+      content: utf8ToBase64(contentStr),
+      branch: githubConfig.branch,
+      ...(sha ? { sha } : {}),
+    }),
+  });
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.message || `GitHub error ${res.status} while saving the file.`);
+  }
+  return res.json();
+}
+
+async function backupProjectToGithub(projectId, { silent = false } = {}) {
+  const project = projects[projectId];
+  if (!project) return false;
+  const days = Object.values(project.days);
+  const payload = { type: "eq-project", id: project.id, name: project.name, exportedAt: Date.now(), days };
+  const path = `${githubConfig.pathPrefix}${project.id}-${slugify(project.name)}.json`;
+  try {
+    await putGithubFile(path, JSON.stringify(payload, null, 2), `Backup project "${project.name}" (${days.length} days)`);
+    if (!silent) toast(`Backed up "${project.name}" to GitHub.`);
+    setGithubStatus(`Last backup: "${project.name}" — ${new Date().toLocaleTimeString()}`);
+    return true;
+  } catch (err) {
+    toast(`GitHub backup failed: ${err.message}`);
+    setGithubStatus(`Backup failed: ${err.message}`);
+    return false;
+  }
+}
+
+async function backupAllProjectsToGithub() {
+  const ids = Object.keys(projects);
+  if (ids.length === 0) { toast("No projects to back up."); return; }
+  setGithubStatus(`Backing up ${ids.length} project(s)…`);
+  let ok = 0;
+  for (const id of ids) {
+    if (await backupProjectToGithub(id, { silent: true })) ok++;
+  }
+  toast(`Backed up ${ok}/${ids.length} project(s) to GitHub.`);
+  setGithubStatus(`Backed up ${ok}/${ids.length} project(s) — ${new Date().toLocaleTimeString()}`);
+}
+
+function populateBackupSelect(files) {
+  const select = document.getElementById("ghBackupSelect");
+  select.innerHTML = files.length ? "" : `<option value="">— No backups found —</option>`;
+  files
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .forEach((f) => {
+      const opt = document.createElement("option");
+      opt.value = f.path;
+      opt.textContent = f.name;
+      select.appendChild(opt);
+    });
+}
+
+async function listGithubBackups() {
+  try {
+    const dirPath = githubConfig.pathPrefix.replace(/\/$/, "");
+    const res = await githubRequest(`/contents/${encodeURI(dirPath)}?ref=${encodeURIComponent(githubConfig.branch)}`);
+    if (res.status === 404) {
+      populateBackupSelect([]);
+      setGithubStatus("No backups folder found yet — back up a project first to create it.");
+      return;
+    }
+    if (!res.ok) throw new Error(`GitHub error ${res.status} while listing backups.`);
+    const data = await res.json();
+    const files = Array.isArray(data) ? data.filter((f) => f.type === "file" && f.name.endsWith(".json")) : [];
+    populateBackupSelect(files);
+    setGithubStatus(`${files.length} backup(s) found on GitHub.`);
+  } catch (err) {
+    toast(`Could not list backups: ${err.message}`);
+    setGithubStatus(`Error: ${err.message}`);
+  }
+}
+
+async function restoreSelectedBackup() {
+  const path = document.getElementById("ghBackupSelect").value;
+  if (!path) { toast("Choose a backup to restore first."); return; }
+  try {
+    const res = await githubRequest(`/contents/${encodeURI(path)}?ref=${encodeURIComponent(githubConfig.branch)}`);
+    if (!res.ok) throw new Error(`GitHub error ${res.status} while fetching the backup.`);
+    const data = await res.json();
+    applyImportedProjectJSON(base64ToUtf8(data.content));
+  } catch (err) {
+    toast(`Restore failed: ${err.message}`);
+  }
+}
+
+function bindGithubSettingsFields() {
+  document.getElementById("ghToken").value = githubConfig.token || "";
+  document.getElementById("ghRepo").value = githubConfig.repo || "";
+  document.getElementById("ghBranch").value = githubConfig.branch || "main";
+  document.getElementById("ghPathPrefix").value = githubConfig.pathPrefix || "backups/";
+  document.getElementById("ghAutoBackup").checked = !!githubConfig.autoBackup;
+}
+
+function saveGithubSettings() {
+  githubConfig = {
+    token: document.getElementById("ghToken").value.trim(),
+    repo: document.getElementById("ghRepo").value.trim(),
+    branch: document.getElementById("ghBranch").value.trim() || "main",
+    pathPrefix: normalizePathPrefix(document.getElementById("ghPathPrefix").value.trim() || "backups/"),
+    autoBackup: document.getElementById("ghAutoBackup").checked,
+  };
+  saveJSON(LS_GITHUB, githubConfig);
+  toast("GitHub connection saved.");
+}
+
+function bindGithubActions() {
+  document.getElementById("ghSaveSettingsBtn").addEventListener("click", saveGithubSettings);
+  document.getElementById("ghAutoBackup").addEventListener("change", (e) => {
+    githubConfig.autoBackup = e.target.checked;
+    saveJSON(LS_GITHUB, githubConfig);
+  });
+  document.getElementById("ghBackupActiveBtn").addEventListener("click", () => {
+    if (activeProjectId) backupProjectToGithub(activeProjectId);
+  });
+  document.getElementById("ghBackupAllBtn").addEventListener("click", backupAllProjectsToGithub);
+  document.getElementById("ghListBackupsBtn").addEventListener("click", listGithubBackups);
+  document.getElementById("ghRestoreBtn").addEventListener("click", restoreSelectedBackup);
 }
 
 // ---------- compile full project PDF ----------
@@ -957,6 +1154,8 @@ function init() {
   bindProjectActions();
   bindDayActions();
   bindReportActions();
+  bindGithubSettingsFields();
+  bindGithubActions();
   renderProjectSelect();
   renderDaySelect();
   updateProjectSummary();

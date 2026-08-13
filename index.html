@@ -38,6 +38,51 @@
   <div class="project-summary" id="projectSummary"></div>
 </section>
 
+<section class="cloud-bar card no-print">
+  <h2>Cloud Backup (GitHub)</h2>
+  <div class="bar-row">
+    <label class="field">
+      <span>Personal Access Token</span>
+      <input type="password" id="ghToken" placeholder="fine-grained token, Contents: read/write" autocomplete="off" />
+    </label>
+    <label class="field">
+      <span>Repo (owner/name)</span>
+      <input type="text" id="ghRepo" placeholder="e.g. zohlat/eq" />
+    </label>
+    <label class="field">
+      <span>Branch</span>
+      <input type="text" id="ghBranch" placeholder="main" />
+    </label>
+    <label class="field">
+      <span>Backup Path Prefix</span>
+      <input type="text" id="ghPathPrefix" placeholder="backups/" />
+    </label>
+    <button id="ghSaveSettingsBtn" class="btn btn-ghost">Save Connection</button>
+  </div>
+  <div class="bar-row">
+    <label class="field field-inline">
+      <input type="checkbox" id="ghAutoBackup" />
+      <span>Auto-backup active project after every Save List</span>
+    </label>
+    <span class="spacer"></span>
+    <button id="ghBackupActiveBtn" class="btn btn-primary" title="Push the active project to GitHub now">☁ Backup Active Project</button>
+    <button id="ghBackupAllBtn" class="btn" title="Push every project to GitHub now">☁ Backup All Projects</button>
+    <button id="ghListBackupsBtn" class="btn" title="Fetch the list of backups already on GitHub">🔄 Refresh Backups List</button>
+  </div>
+  <div class="bar-row">
+    <label class="field">
+      <span>Available Backups</span>
+      <select id="ghBackupSelect"><option value="">— Click Refresh to load —</option></select>
+    </label>
+    <button id="ghRestoreBtn" class="btn btn-ghost" title="Pull a backup down from GitHub as a new project">Restore as New Project</button>
+  </div>
+  <div class="project-summary" id="ghStatus"></div>
+  <div class="cloud-note">
+    Your token is stored only in this browser's local storage — never committed to the repo.
+    Use a fine-grained GitHub token scoped to just this repository with Contents: Read and write.
+  </div>
+</section>
+
 <section class="day-bar card no-print">
   <h2>Filming Day</h2>
   <div class="bar-row">
