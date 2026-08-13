@@ -111,6 +111,13 @@ let state = {
   selections: {},
 };
 
+// Categories start collapsed; this tracks which ones the user has opened
+// so re-rendering (Select All, Clear, etc.) doesn't snap them shut again.
+let expandedCategories = new Set();
+function categoryKey(dept, category) {
+  return `${dept}::${category}`;
+}
+
 function itemKey(dept, cat, item) {
   return `${dept}::${cat}::${item}`;
 }
@@ -212,18 +219,25 @@ function renderDepartment(dept) {
     filterDepartment(dept, e.target.value.trim().toLowerCase());
   });
   toolbar.querySelector('[data-action="expand-all"]').addEventListener("click", () => {
-    list.querySelectorAll(".category").forEach((c) => c.classList.remove("collapsed"));
+    list.querySelectorAll(".category").forEach((c) => {
+      c.classList.remove("collapsed");
+      expandedCategories.add(categoryKey(dept, c.dataset.category));
+    });
   });
   toolbar.querySelector('[data-action="collapse-all"]').addEventListener("click", () => {
-    list.querySelectorAll(".category").forEach((c) => c.classList.add("collapsed"));
+    list.querySelectorAll(".category").forEach((c) => {
+      c.classList.add("collapsed");
+      expandedCategories.delete(categoryKey(dept, c.dataset.category));
+    });
   });
 
   updateDeptSummary(dept);
 }
 
 function renderCategory(dept, catBlock, container) {
+  const catKey = categoryKey(dept, catBlock.category);
   const catEl = document.createElement("div");
-  catEl.className = "category";
+  catEl.className = "category" + (expandedCategories.has(catKey) ? "" : " collapsed");
   catEl.dataset.category = catBlock.category;
 
   const header = document.createElement("div");
@@ -240,6 +254,11 @@ function renderCategory(dept, catBlock, container) {
   header.addEventListener("click", (e) => {
     if (e.target.closest(".category-actions")) return;
     catEl.classList.toggle("collapsed");
+    if (catEl.classList.contains("collapsed")) {
+      expandedCategories.delete(catKey);
+    } else {
+      expandedCategories.add(catKey);
+    }
   });
   header.querySelector('[data-action="select-all"]').addEventListener("click", (e) => {
     e.stopPropagation();

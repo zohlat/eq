@@ -408,9 +408,10 @@ table.report-table td.qty-col, table.report-table th.qty-col { width: 60px; text
   .app-header { padding: calc(10px + env(safe-area-inset-top)) 12px 10px; }
   .app-header h1 { font-size: 1.15rem; }
   .day-strip { padding: 10px 12px; gap: 8px 10px; }
-  .strip-row { gap: 8px 10px; }
-  .day-strip .field, .day-strip .field-day { flex: 1 1 45%; }
-  .day-strip .field-notes { flex: 1 1 100%; }
+  .strip-row { gap: 6px 8px; }
+  .day-strip .field, .day-strip .field-notes { flex: 1 1 45%; min-width: 0; }
+  .day-strip .field-day { flex: 1 1 0; min-width: 0; }
+  .day-strip .field-day input { padding-left: 6px; padding-right: 4px; }
   .day-strip.filming-days .field { flex: 1 1 100%; }
   .icon-btn-row { width: 100%; justify-content: flex-end; }
   .tabs { padding: 0 8px; top: calc(64px + env(safe-area-inset-top)); }
