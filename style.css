@@ -53,20 +53,30 @@ h1, h2, h3 { margin: 0 0 4px 0; }
 }
 .brand .subtitle { color: var(--text-dim); font-size: 0.85rem; }
 
-/* Day strip — the only always-visible controls: project, date, day # */
+/* Day strip — the only always-visible controls: project, date, day #, etc. */
 .day-strip {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px 16px;
-  align-items: flex-end;
   padding: 12px 20px;
   background: var(--bg-panel);
   border-bottom: 1px solid var(--border);
 }
+.strip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: flex-end;
+}
 .day-strip .field { flex: 1 1 180px; }
 .day-strip .field-day { flex: 0 1 110px; }
 .day-strip .field-notes { flex: 2 1 240px; }
-.day-strip.filming-days { border-top: 1px solid var(--border); }
+.day-strip.filming-days {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  border-top: 1px solid var(--border);
+}
 .day-strip.filming-days .field { flex: 1 1 240px; }
 
 .icon-btn-row { display: flex; gap: 8px; }
@@ -398,6 +408,7 @@ table.report-table td.qty-col, table.report-table th.qty-col { width: 60px; text
   .app-header { padding: calc(10px + env(safe-area-inset-top)) 12px 10px; }
   .app-header h1 { font-size: 1.15rem; }
   .day-strip { padding: 10px 12px; gap: 8px 10px; }
+  .strip-row { gap: 8px 10px; }
   .day-strip .field, .day-strip .field-day { flex: 1 1 45%; }
   .day-strip .field-notes { flex: 1 1 100%; }
   .day-strip.filming-days .field { flex: 1 1 100%; }

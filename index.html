@@ -30,34 +30,40 @@
 </header>
 
 <section class="day-strip no-print">
-  <label class="field">
-    <span>Project</span>
-    <select id="projectSelect"></select>
-  </label>
-  <label class="field">
-    <span>Shooting Date</span>
-    <input type="date" id="shootDate" />
-  </label>
-  <label class="field field-day">
-    <span>Filming Day #</span>
-    <input type="number" id="dayNumber" min="1" step="1" placeholder="e.g. 4" />
-  </label>
-  <label class="field field-day">
-    <span>of Total Days</span>
-    <input type="number" id="totalDays" min="1" step="1" placeholder="e.g. 20" />
-  </label>
-  <label class="field">
-    <span>Location</span>
-    <input type="text" id="location" placeholder="Set / address" />
-  </label>
-  <label class="field field-day">
-    <span>Call Time</span>
-    <input type="time" id="callTime" />
-  </label>
-  <label class="field field-notes">
-    <span>Notes</span>
-    <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
-  </label>
+  <div class="strip-row">
+    <label class="field">
+      <span>Project</span>
+      <select id="projectSelect"></select>
+    </label>
+    <label class="field">
+      <span>Shooting Date</span>
+      <input type="date" id="shootDate" />
+    </label>
+  </div>
+  <div class="strip-row">
+    <label class="field field-day">
+      <span>Filming Day #</span>
+      <input type="number" id="dayNumber" min="1" step="1" placeholder="e.g. 4" />
+    </label>
+    <label class="field field-day">
+      <span>of Total Days</span>
+      <input type="number" id="totalDays" min="1" step="1" placeholder="e.g. 20" />
+    </label>
+    <label class="field field-day">
+      <span>Call Time</span>
+      <input type="time" id="callTime" />
+    </label>
+  </div>
+  <div class="strip-row">
+    <label class="field">
+      <span>Location</span>
+      <input type="text" id="location" placeholder="Set / address" />
+    </label>
+    <label class="field field-notes">
+      <span>Notes</span>
+      <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
+    </label>
+  </div>
 </section>
 
 <section class="day-strip filming-days no-print">
