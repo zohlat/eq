@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Equipment List — Lighting &amp; Grip</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <h1>Daily Equipment List</h1>
+    <span class="subtitle">Lighting &amp; Grip Department</span>
+  </div>
+
+  <div class="header-actions">
+    <label class="field">
+      <span>Saved Lists</span>
+      <select id="savedListsSelect">
+        <option value="">— Load a saved day —</option>
+      </select>
+    </label>
+    <button id="loadBtn" class="btn btn-ghost" title="Load selected saved day">Load</button>
+    <button id="duplicateBtn" class="btn btn-ghost" title="Copy equipment from the most recent saved day">Duplicate Last Day</button>
+    <button id="newBtn" class="btn btn-ghost" title="Start a brand new blank list">New List</button>
+    <button id="deleteBtn" class="btn btn-danger-ghost" title="Delete selected saved day">Delete</button>
+  </div>
+</header>
+
+<section class="shoot-info card">
+  <h2>Shoot Information</h2>
+  <div class="shoot-info-grid">
+    <label class="field">
+      <span>Shooting Date</span>
+      <input type="date" id="shootDate" />
+    </label>
+    <label class="field">
+      <span>Filming Day #</span>
+      <input type="number" id="dayNumber" min="1" step="1" placeholder="e.g. 4" />
+    </label>
+    <label class="field">
+      <span>of Total Days</span>
+      <input type="number" id="totalDays" min="1" step="1" placeholder="e.g. 20" />
+    </label>
+    <label class="field">
+      <span>Production Title</span>
+      <input type="text" id="productionTitle" placeholder="Untitled Project" />
+    </label>
+    <label class="field">
+      <span>Director</span>
+      <input type="text" id="director" placeholder="Director name" />
+    </label>
+    <label class="field">
+      <span>DP / Cinematographer</span>
+      <input type="text" id="dp" placeholder="DP name" />
+    </label>
+    <label class="field">
+      <span>Gaffer</span>
+      <input type="text" id="gaffer" placeholder="Gaffer name" />
+    </label>
+    <label class="field">
+      <span>Key Grip</span>
+      <input type="text" id="keyGrip" placeholder="Key Grip name" />
+    </label>
+    <label class="field">
+      <span>Location</span>
+      <input type="text" id="location" placeholder="Set / address" />
+    </label>
+    <label class="field">
+      <span>Call Time</span>
+      <input type="time" id="callTime" />
+    </label>
+    <label class="field field-wide">
+      <span>Notes</span>
+      <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
+    </label>
+  </div>
+</section>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="lighting">💡 Lighting</button>
+  <button class="tab-btn" data-tab="grip">🛠 Grip</button>
+  <button class="tab-btn" data-tab="report">📋 Daily Report <span id="selectedCount" class="badge">0</span></button>
+</nav>
+
+<main>
+  <section id="tab-lighting" class="tab-panel active department-panel" data-department="lighting"></section>
+  <section id="tab-grip" class="tab-panel department-panel" data-department="grip"></section>
+
+  <section id="tab-report" class="tab-panel">
+    <div class="report-toolbar no-print">
+      <label class="field field-inline">
+        <span>Save this list as</span>
+        <input type="text" id="saveListName" placeholder="e.g. 2026-08-13 - Day 4" />
+      </label>
+      <button id="saveListBtn" class="btn btn-primary">💾 Save List</button>
+      <button id="printBtn" class="btn">🖨 Print / Save PDF</button>
+      <button id="csvBtn" class="btn">⬇ Export CSV</button>
+      <button id="copyBtn" class="btn">📋 Copy as Text</button>
+    </div>
+    <div id="reportContent" class="report-content"></div>
+  </section>
+</main>
+
+<footer class="app-footer no-print">
+  <span>Data saved automatically in your browser (localStorage). Edit <code>data/lighting.js</code> and <code>data/grip.js</code> to customize the equipment catalog.</span>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
