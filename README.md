@@ -32,6 +32,23 @@ daily equipment requirement report.
   is used across the project), ready to print or save as PDF.
 - **Cloud Backup (GitHub)**: back up any project — or all of them — straight
   to a GitHub repo as JSON files, directly from the browser. See below.
+- **Installable on iPhone/iPad**: add it to the Home Screen and it launches
+  full-screen, with no Safari address bar. See below.
+
+## Add to Home Screen (iPhone / iPad)
+
+1. Open `index.html` in Safari (either the local file, or hosted via
+   `npm start` / GitHub Pages / any static host).
+2. Tap the **Share** button, then **Add to Home Screen**.
+3. Launch it from the Home Screen icon — it opens full-screen, with no
+   Safari chrome, and behaves like a standalone app.
+
+This works because of the `apple-mobile-web-app-*` meta tags and
+`apple-touch-icon` in `index.html`, plus `manifest.json` (which also enables
+"Add to Home Screen" on Android/Chrome as an installable PWA). The icon
+artwork lives in `icons/`. Safe-area insets (notch, status bar, home
+indicator) are handled in `style.css` via `env(safe-area-inset-*)`, so
+content doesn't get hidden behind them.
 
 ## Cloud Backup (GitHub)
 
@@ -112,4 +129,6 @@ app.js          App logic (state, rendering, save/load, export)
 data/lighting.js  Lighting equipment catalog
 data/grip.js      Grip equipment catalog
 server.js       Zero-dependency static file server for local dev
+manifest.json   Web app manifest (Add to Home Screen / PWA install)
+icons/          Home screen / favicon artwork
 ```
