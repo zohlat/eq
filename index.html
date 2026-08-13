@@ -13,20 +13,46 @@
     <h1>Daily Equipment List</h1>
     <span class="subtitle">Lighting &amp; Grip Department</span>
   </div>
+</header>
 
-  <div class="header-actions">
+<section class="project-bar card no-print">
+  <h2>Project</h2>
+  <div class="bar-row">
     <label class="field">
-      <span>Saved Lists</span>
+      <span>Active Project</span>
+      <select id="projectSelect"></select>
+    </label>
+    <label class="field field-inline">
+      <span>New Project</span>
+      <input type="text" id="newProjectName" placeholder="e.g. Feature Film A" />
+    </label>
+    <button id="newProjectBtn" class="btn btn-primary" title="Create a new project">+ New Project</button>
+    <button id="renameProjectBtn" class="btn btn-ghost" title="Rename the active project">Rename</button>
+    <button id="deleteProjectBtn" class="btn btn-danger-ghost" title="Delete the active project and all its days">Delete Project</button>
+    <span class="spacer"></span>
+    <button id="exportProjectBtn" class="btn" title="Download every saved day in this project as one JSON file">⬇ Export Project</button>
+    <label class="btn" for="importProjectInput" title="Load a project JSON file exported from this app">⬆ Import Project</label>
+    <input type="file" id="importProjectInput" accept="application/json" hidden />
+    <button id="compilePdfBtn" class="btn btn-primary" title="Combine every saved day in this project into one printable PDF">🖨 Compile Full PDF (All Days)</button>
+  </div>
+  <div class="project-summary" id="projectSummary"></div>
+</section>
+
+<section class="day-bar card no-print">
+  <h2>Filming Day</h2>
+  <div class="bar-row">
+    <label class="field">
+      <span>Days in this Project</span>
       <select id="savedListsSelect">
-        <option value="">— Load a saved day —</option>
+        <option value="">— Select a day —</option>
       </select>
     </label>
-    <button id="loadBtn" class="btn btn-ghost" title="Load selected saved day">Load</button>
+    <button id="loadBtn" class="btn btn-ghost" title="Load selected day">Load Day</button>
     <button id="duplicateBtn" class="btn btn-ghost" title="Copy equipment from the most recent saved day">Duplicate Last Day</button>
-    <button id="newBtn" class="btn btn-ghost" title="Start a brand new blank list">New List</button>
-    <button id="deleteBtn" class="btn btn-danger-ghost" title="Delete selected saved day">Delete</button>
+    <button id="newBtn" class="btn btn-ghost" title="Start a brand new blank day">New Day</button>
+    <button id="deleteBtn" class="btn btn-danger-ghost" title="Delete selected day">Delete Day</button>
   </div>
-</header>
+</section>
 
 <section class="shoot-info card">
   <h2>Shoot Information</h2>
@@ -98,6 +124,9 @@
       <button id="printBtn" class="btn">🖨 Print / Save PDF</button>
       <button id="csvBtn" class="btn">⬇ Export CSV</button>
       <button id="copyBtn" class="btn">📋 Copy as Text</button>
+      <button id="exportDayJsonBtn" class="btn" title="Download just this day as a JSON file">⬇ Export Day (.json)</button>
+      <label class="btn" for="importDayJsonInput" title="Load a single day JSON file exported from this app">⬆ Import Day (.json)</label>
+      <input type="file" id="importDayJsonInput" accept="application/json" hidden />
     </div>
     <div id="reportContent" class="report-content"></div>
   </section>

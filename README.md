@@ -7,6 +7,12 @@ daily equipment requirement report.
 
 ## Features
 
+- **Projects**: group all the filming days for a production together (e.g.
+  a project with 20 saved days, another with 30). Switch projects from the
+  Project bar; each keeps its own set of saved days.
+- **Filming days**: within a project, save as many days as you need, reload
+  any of them, or "Duplicate Last Day" to carry over yesterday's gear and
+  auto-bump the day number.
 - Shoot info panel: date, filming day #, total days, production title,
   director, DP, gaffer, key grip, location, call time, notes.
 - Extensive Lighting and Grip equipment catalogs, organized into collapsible
@@ -15,10 +21,15 @@ daily equipment requirement report.
 - Search/filter within each department, plus Select All / Clear per category.
 - Add custom items to any category — they're remembered for future lists.
 - Auto-saving draft (localStorage) so a page refresh never loses your work.
-- Save named daily lists, reload them later, or "Duplicate Last Day" to
-  carry over yesterday's gear and auto-bump the day number.
-- Generated report tab: grouped by department/category with totals.
-- Export to CSV, copy as plain text, or print/save as PDF.
+- Generated Daily Report tab: grouped by department/category with totals.
+  Export to CSV, copy as plain text, print/save as PDF, or export just that
+  day as a `.json` file (with a matching import).
+- **Export/Import a whole Project** as one `.json` file — every saved day,
+  portable to another computer or teammate, and re-importable any time.
+- **Compile Full PDF**: combine every saved day in the active project into
+  one printable document (cover page + one section per day + an aggregate
+  equipment summary showing cumulative quantity and how many days each item
+  is used across the project), ready to print or save as PDF.
 
 ## Running locally
 
