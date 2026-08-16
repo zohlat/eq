@@ -2,6 +2,160 @@
   "type": "eq-project",
   "id": "msr1b50nh4fuks",
   "name": "My Project",
-  "exportedAt": 1786597624520,
-  "days": []
+  "exportedAt": 1786851970034,
+  "days": [
+    {
+      "id": "msv9j01do5slgf",
+      "name": "2026-08-13 — Day 1",
+      "savedAt": 1786851970033,
+      "shootInfo": {
+        "shootDate": "2026-08-13",
+        "callTime": "",
+        "totalDays": "5",
+        "dayNumber": "1"
+      },
+      "selections": {
+        "lighting::HMI Fixtures (PAR & Fresnel)::125W HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "125W HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::200W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "200W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::575W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "575W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::575W HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "575W HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::1200W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "1200W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::1200W HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "1200W HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::2500W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "2500W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::2500W HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "2500W HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::4000W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "4000W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::4000W HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "4000W HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::6000W HMI PAR (Wendy Light)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "6000W HMI PAR (Wendy Light)"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::6000W HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "6000W HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::12K HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "12K HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::12K HMI PAR (Prime)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "12K HMI PAR (Prime)"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::18K HMI Fresnel": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "18K HMI Fresnel"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::18K HMI PAR (Prime)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "18K HMI PAR (Prime)"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::24K HMI PAR": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "24K HMI PAR"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::PAR Cans (medium/wide/narrow lenses)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "PAR Cans (medium/wide/narrow lenses)"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::HMI Ballast (electronic)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "HMI Ballast (electronic)"
+        },
+        "lighting::HMI Fixtures (PAR & Fresnel)::HMI Ballast (magnetic)": {
+          "qty": 1,
+          "note": "",
+          "dept": "lighting",
+          "category": "HMI Fixtures (PAR & Fresnel)",
+          "item": "HMI Ballast (magnetic)"
+        }
+      }
+    }
+  ]
 }
