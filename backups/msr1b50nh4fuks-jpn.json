@@ -2,7 +2,7 @@
   "type": "eq-project",
   "id": "msr1b50nh4fuks",
   "name": "JPN",
-  "exportedAt": 1786852273718,
+  "exportedAt": 1786852391266,
   "days": [
     {
       "id": "msv9j01do5slgf",
@@ -312,9 +312,9 @@
       }
     },
     {
-      "id": "msv9pid00rv59w",
+      "id": "msv9s128lbmtm1",
       "name": "2026-08-16 — Day 3",
-      "savedAt": 1786852273716,
+      "savedAt": 1786852391264,
       "shootInfo": {
         "shootDate": "2026-08-16",
         "callTime": "",
