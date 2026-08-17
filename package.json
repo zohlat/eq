@@ -1,0 +1,10 @@
+{
+  "name": "cinematography-equipment-app",
+  "version": "1.0.0",
+  "description": "Daily cinematography equipment list app for Lighting and Grip departments.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}

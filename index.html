@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Daily Equipment List — Lighting &amp; Grip</title>
+
+<!-- Add to Home Screen — iOS / iPadOS -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Equipment List" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+
+<!-- Add to Home Screen — Android / other -->
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#0f1216" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <h1>Daily Equipment List</h1>
+    <span class="subtitle">Lighting &amp; Grip Department</span>
+  </div>
+  <button id="settingsBtn" class="btn btn-ghost no-print" title="Projects &amp; Cloud Backup">⚙ Projects &amp; Backup</button>
+</header>
+
+<section class="day-strip no-print">
+  <div class="strip-row">
+    <label class="field">
+      <span>Project</span>
+      <select id="projectSelect"></select>
+    </label>
+    <label class="field">
+      <span>Shooting Date</span>
+      <input type="date" id="shootDate" />
+    </label>
+  </div>
+  <div class="strip-row">
+    <label class="field field-day">
+      <span>Filming Day #</span>
+      <input type="number" id="dayNumber" min="1" step="1" placeholder="e.g. 4" />
+    </label>
+    <label class="field field-day">
+      <span>of Total Days</span>
+      <input type="number" id="totalDays" min="1" step="1" placeholder="e.g. 20" />
+    </label>
+    <label class="field field-day">
+      <span>Call Time</span>
+      <input type="time" id="callTime" />
+    </label>
+  </div>
+  <div class="strip-row">
+    <label class="field">
+      <span>Location</span>
+      <input type="text" id="location" placeholder="Set / address" />
+    </label>
+    <label class="field field-notes">
+      <span>Notes</span>
+      <input type="text" id="shootNotes" placeholder="Weather, special rigging notes, truck info, etc." />
+    </label>
+  </div>
+</section>
+
+<section class="day-strip filming-days no-print">
+  <label class="field">
+    <span>Filming Days in this Project</span>
+    <select id="savedListsSelect">
+      <option value="">— Select a day —</option>
+    </select>
+  </label>
+  <div class="icon-btn-row">
+    <button id="loadBtn" class="btn btn-icon" title="Load selected day">📂</button>
+    <button id="duplicateBtn" class="btn btn-icon" title="Duplicate Last Day">🔁</button>
+    <button id="newBtn" class="btn btn-icon" title="New Day">➕</button>
+    <button id="deleteBtn" class="btn btn-icon btn-danger-ghost" title="Delete selected day">🗑</button>
+  </div>
+</section>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="lighting">💡 Lighting</button>
+  <button class="tab-btn" data-tab="grip">🛠 Grip</button>
+  <button class="tab-btn" data-tab="report">📋 Daily Report <span id="selectedCount" class="badge">0</span></button>
+</nav>
+
+<main>
+  <section id="tab-lighting" class="tab-panel active department-panel" data-department="lighting"></section>
+  <section id="tab-grip" class="tab-panel department-panel" data-department="grip"></section>
+
+  <section id="tab-report" class="tab-panel">
+    <details class="disclosure card no-print">
+      <summary>Shoot Details <span class="details-hint">production title &amp; crew</span></summary>
+      <div class="shoot-info-grid">
+        <label class="field">
+          <span>Production Title</span>
+          <input type="text" id="productionTitle" placeholder="Defaults to project name" />
+        </label>
+        <label class="field">
+          <span>Director</span>
+          <input type="text" id="director" placeholder="Director name" />
+        </label>
+        <label class="field">
+          <span>DP / Cinematographer</span>
+          <input type="text" id="dp" placeholder="DP name" />
+        </label>
+        <label class="field">
+          <span>Gaffer</span>
+          <input type="text" id="gaffer" placeholder="Gaffer name" />
+        </label>
+        <label class="field">
+          <span>Key Grip</span>
+          <input type="text" id="keyGrip" placeholder="Key Grip name" />
+        </label>
+      </div>
+    </details>
+
+    <div class="report-toolbar no-print">
+      <label class="field field-inline">
+        <span>Save this list as</span>
+        <input type="text" id="saveListName" placeholder="e.g. 2026-08-13 - Day 4" />
+      </label>
+      <button id="saveListBtn" class="btn btn-primary">💾 Save List</button>
+      <button id="printBtn" class="btn">🖨 Print / Save PDF</button>
+      <button id="csvBtn" class="btn">⬇ Export CSV</button>
+      <button id="copyBtn" class="btn">📋 Copy as Text</button>
+      <button id="exportDayJsonBtn" class="btn" title="Download just this day as a JSON file">⬇ Export Day (.json)</button>
+      <label class="btn" for="importDayJsonInput" title="Load a single day JSON file exported from this app">⬆ Import Day (.json)</label>
+      <input type="file" id="importDayJsonInput" accept="application/json" hidden />
+      <button id="compilePdfBtn" class="btn" title="Combine every saved day in this project into one printable PDF">🖨 Compile Full Project PDF</button>
+    </div>
+    <div id="reportContent" class="report-content"></div>
+  </section>
+</main>
+
+<footer class="app-footer no-print">
+  <span>Data saved automatically in your browser (localStorage). Edit <code>data/lighting.js</code> and <code>data/grip.js</code> to customize the equipment catalog.</span>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<div id="settingsModal" class="modal-backdrop no-print">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Projects &amp; Cloud Backup</h2>
+      <button id="settingsCloseBtn" class="btn btn-ghost" title="Close">✕ Close</button>
+    </div>
+    <div class="modal-body">
+      <section class="card">
+        <h2>Project</h2>
+        <div class="bar-row">
+          <label class="field field-inline">
+            <span>New Project</span>
+            <input type="text" id="newProjectName" placeholder="e.g. Feature Film A" />
+          </label>
+          <button id="newProjectBtn" class="btn btn-primary" title="Create a new project">+ New Project</button>
+          <button id="renameProjectBtn" class="btn btn-ghost" title="Rename the active project">Rename</button>
+          <button id="deleteProjectBtn" class="btn btn-danger-ghost" title="Delete the active project and all its days">Delete Project</button>
+        </div>
+        <div class="bar-row">
+          <button id="exportProjectBtn" class="btn" title="Download every saved day in this project as one JSON file">⬇ Export Project (.json)</button>
+          <label class="btn" for="importProjectInput" title="Load a project JSON file exported from this app">⬆ Import Project (.json)</label>
+          <input type="file" id="importProjectInput" accept="application/json" hidden />
+        </div>
+        <div class="project-summary" id="projectSummary"></div>
+      </section>
+
+      <section class="card">
+        <h2>Cloud Backup (GitHub)</h2>
+        <div class="bar-row">
+          <label class="field">
+            <span>Personal Access Token</span>
+            <input type="password" id="ghToken" placeholder="fine-grained token, Contents: read/write" autocomplete="off" />
+          </label>
+          <label class="field">
+            <span>Repo (owner/name)</span>
+            <input type="text" id="ghRepo" placeholder="e.g. zohlat/eq" />
+          </label>
+          <label class="field">
+            <span>Branch</span>
+            <input type="text" id="ghBranch" placeholder="main" />
+          </label>
+          <label class="field">
+            <span>Backup Path Prefix</span>
+            <input type="text" id="ghPathPrefix" placeholder="backups/" />
+          </label>
+          <button id="ghSaveSettingsBtn" class="btn btn-ghost">Save Connection</button>
+        </div>
+        <div class="bar-row">
+          <label class="field field-inline">
+            <input type="checkbox" id="ghAutoBackup" />
+            <span>Auto-backup active project after every Save List</span>
+          </label>
+          <span class="spacer"></span>
+          <button id="ghBackupActiveBtn" class="btn btn-primary" title="Push the active project to GitHub now">☁ Backup Active Project</button>
+          <button id="ghBackupAllBtn" class="btn" title="Push every project to GitHub now">☁ Backup All Projects</button>
+          <button id="ghListBackupsBtn" class="btn" title="Fetch the list of backups already on GitHub">🔄 Refresh Backups List</button>
+        </div>
+        <div class="bar-row">
+          <label class="field">
+            <span>Available Backups</span>
+            <select id="ghBackupSelect"><option value="">— Click Refresh to load —</option></select>
+          </label>
+          <button id="ghRestoreBtn" class="btn btn-ghost" title="Pull a backup down from GitHub as a new project">Restore as New Project</button>
+        </div>
+        <div class="project-summary" id="ghStatus"></div>
+        <div class="cloud-note">
+          Your token is stored only in this browser's local storage — never committed to the repo.
+          Use a fine-grained GitHub token scoped to just this repository with Contents: Read and write.
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="data/lighting.js"></script>
+<script src="data/grip.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
